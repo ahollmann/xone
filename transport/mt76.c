@@ -630,7 +630,7 @@ static int xone_mt76_get_channel_power(struct xone_mt76 *mt,
 
 static int xone_mt76_evaluate_channels(struct xone_mt76 *mt)
 {
-	struct xone_mt76_channel *chan;
+	struct xone_mt76_channel *chan, *selected;
 	int i, err;
 
 	memcpy(mt->channels, xone_mt76_channels, sizeof(xone_mt76_channels));
@@ -649,10 +649,19 @@ static int xone_mt76_evaluate_channels(struct xone_mt76 *mt)
 
 		dev_dbg(mt->dev, "%s: channel=%u, power=%u\n", __func__,
 			chan->index, chan->power);
+
+		if (chan->index == 149) {
+		selected = chan;
+		dev_dbg(mt->dev, "%s: selected channel=%u, power=%u\n", __func__,
+		selected->index, selected->power);
+		}
 	}
 
+
+
+
 	/* the last channel might not be the best one */
-	mt->channel = chan;
+	mt->channel = selected;
 
 	return 0;
 }
